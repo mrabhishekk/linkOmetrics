@@ -12,6 +12,7 @@ public class Url {      //this class represents data that is stored in our datab
 
     private String originalUrl;
 
+    @Column(unique = true, nullable = false)
     private String shortCode;
 
 
