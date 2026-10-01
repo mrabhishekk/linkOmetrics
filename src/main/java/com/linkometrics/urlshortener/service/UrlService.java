@@ -1,6 +1,7 @@
 package com.linkometrics.urlshortener.service;
 
 import com.linkometrics.urlshortener.entity.Url;
+import com.linkometrics.urlshortener.exception.UrlNotFoundException;
 import com.linkometrics.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
-    
+
     //Mapping of Java objects to database records.
     public Url saveUrl(String originalUrl)
     {
@@ -56,7 +57,7 @@ public class UrlService {
     //this code can be put into controller, but keeping it as a method here makes it modular to reuse this logic from anywhere, many times.
     public Url getByShortCode(String shortCode)
     {
-        return urlRepository.findByShortCode(shortCode).orElseThrow(); //If the URL exists, give me the Url object. If it doesn't exist, throw an exception.
+        return urlRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException("Short Url not found.")); //If the URL exists, give me the Url object. If it doesn't exist, throw an exception.
     }
 
 
