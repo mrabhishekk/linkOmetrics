@@ -4,8 +4,6 @@ import com.linkometrics.urlshortener.entity.Url;
 import com.linkometrics.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class UrlService {
 
@@ -17,6 +15,7 @@ public class UrlService {
         this.urlRepository = urlRepository;
     }
 
+    
     //Mapping of Java objects to database records.
     public Url saveUrl(String originalUrl)
     {
@@ -25,9 +24,6 @@ public class UrlService {
         url.setOriginalUrl(originalUrl);
 
         urlRepository.save(url); //Spring Data JPA takes this Java object and saves it to PostgreSQL. //We also create the database id.
-
-        //old method of shortCode generation
-        //String shortCode = UUID.randomUUID().toString().substring(0, 6); //Generating random short code of 6 characters.
 
         String shortCode = encodeBase62(url.getId());
 
