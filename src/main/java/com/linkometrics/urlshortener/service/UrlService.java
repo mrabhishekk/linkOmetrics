@@ -24,12 +24,36 @@ public class UrlService {
 
         url.setOriginalUrl(originalUrl);
 
-        String shortCode = UUID.randomUUID().toString().substring(0, 6); //Generating random short code of 6 characters.
+        urlRepository.save(url); //Spring Data JPA takes this Java object and saves it to PostgreSQL. //We also create the database id.
+
+        //old method of shortCode generation
+        //String shortCode = UUID.randomUUID().toString().substring(0, 6); //Generating random short code of 6 characters.
+
+        String shortCode = encodeBase62(url.getId());
 
         url.setShortCode(shortCode);
 
-        return urlRepository.save(url); //Spring Data JPA takes this Java object and saves it to PostgreSQL.
+        return urlRepository.save(url);
 
+    }
+
+
+    public String encodeBase62(Long id)
+    {
+        String characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        StringBuilder result = new StringBuilder();
+
+        while(id > 0)
+        {
+            int remainder = (int)(id % 62);
+
+            result.append(characters.charAt(remainder));
+
+            id = id / 62;
+        }
+
+        return result.reverse().toString();
     }
 
 
