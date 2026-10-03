@@ -57,7 +57,12 @@ public class UrlService {
     //this code can be put into controller, but keeping it as a method here makes it modular to reuse this logic from anywhere, many times.
     public Url getByShortCode(String shortCode)
     {
-        return urlRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException("Short Url not found.")); //If the URL exists, give me the Url object. If it doesn't exist, throw an exception.
+        Url url = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException("Short Url not found.")); //If the URL exists, give me the Url object. If it doesn't exist, throw an exception.
+
+        url.incrementClicks();
+        urlRepository.save(url);
+
+        return url;
     }
 
 

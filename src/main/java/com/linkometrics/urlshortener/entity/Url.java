@@ -15,6 +15,8 @@ public class Url {      //this class represents data that is stored in our datab
     @Column(unique = true, nullable = false)
     private String shortCode;
 
+    private long clicks = 0;
+
 
     public Long getId()
     {
@@ -41,6 +43,17 @@ public class Url {      //this class represents data that is stored in our datab
     public void setShortCode(String shortCode)
     {
         this.shortCode = shortCode;
+    }
+
+
+    public long getClicks()
+    {
+        return clicks;
+    }
+
+    public void incrementClicks()
+    {
+        clicks++;
     }
 
 

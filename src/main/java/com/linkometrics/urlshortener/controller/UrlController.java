@@ -11,7 +11,7 @@ import java.net.URI;
 
 @RestController  //@RestController tells this class contains APIs that should receive HTTP requests.
 //@RequestMapping("/abhi")
-public class UrlController
+public class UrlController  //controller is mainly responsible for building the HTTP response not business logic
 {
     @GetMapping("/hello")    //When someone sends a GET request to /hello, execute this method.
     public String hello()
