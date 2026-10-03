@@ -1,8 +1,11 @@
 package com.linkometrics.urlshortener.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 //this class represents the data coming from the user into the app
 public class UrlRequest
 {
+    @NotBlank
     private String originalUrl;
 
     public String getOriginalUrl()

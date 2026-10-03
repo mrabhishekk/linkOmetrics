@@ -1,9 +1,13 @@
 package com.linkometrics.urlshortener.service;
 
+import aj.org.objectweb.asm.commons.TryCatchBlockSorter;
 import com.linkometrics.urlshortener.entity.Url;
 import com.linkometrics.urlshortener.exception.UrlNotFoundException;
 import com.linkometrics.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Service
 public class UrlService {
@@ -20,6 +24,8 @@ public class UrlService {
     //Mapping of Java objects to database records.
     public Url saveUrl(String originalUrl)
     {
+        originalUrl = validateAndFormatUrl(originalUrl);
+
         Url url = new Url();  //Each url object is a row in the database.
 
         url.setOriginalUrl(originalUrl);
@@ -31,6 +37,41 @@ public class UrlService {
         url.setShortCode(shortCode);
 
         return urlRepository.save(url);
+
+    }
+
+
+    private String validateAndFormatUrl(String originalUrl)
+    {
+        if(originalUrl == null || originalUrl.isBlank())
+        {
+            throw new IllegalArgumentException("Url cannot be empty.");
+        }
+
+        String url = originalUrl.trim(); //removes spaces before and after the url
+
+        if(!url.startsWith("http://") && !url.startsWith("https://"))
+        {
+            url = "https://" + url;
+        }
+
+      try   //try contains code that might throw an exception
+        {
+            URI uri = new URI(url);   //if the url has an invalid URI structure, it can fail
+
+            String host = uri.getHost();  //getHost() asks: Does this URI have a recognizable domain/host?
+
+            if(host == null || !host.contains(".") || host.startsWith(".") || host.endsWith("."))
+            {
+                throw new IllegalArgumentException("Invalid Url");
+            }
+
+            return url;
+        }
+        catch (URISyntaxException e)
+        {
+            throw new IllegalArgumentException("Invalid Url");
+        }
 
     }
 

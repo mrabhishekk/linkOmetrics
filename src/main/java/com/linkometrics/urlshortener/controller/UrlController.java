@@ -3,6 +3,7 @@ package com.linkometrics.urlshortener.controller;
 import com.linkometrics.urlshortener.entity.Url;
 import com.linkometrics.urlshortener.model.UrlRequest;
 import com.linkometrics.urlshortener.service.UrlService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.net.URI;
 //@RequestMapping("/abhi")
 public class UrlController  //controller is mainly responsible for building the HTTP response not business logic
 {
+
     @GetMapping("/hello")    //When someone sends a GET request to /hello, execute this method.
     public String hello()
     {
@@ -33,7 +35,7 @@ public class UrlController  //controller is mainly responsible for building the 
 
 
     @PostMapping("/shorten")
-    public Url shortenUrl(@RequestBody UrlRequest request)
+    public Url shortenUrl(@Valid @RequestBody UrlRequest request) //@RequestBody converts JSON → UrlRequest
     {
         return urlService.saveUrl(request.getOriginalUrl());
     }
