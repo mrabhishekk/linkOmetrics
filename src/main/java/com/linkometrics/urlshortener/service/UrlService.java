@@ -1,7 +1,7 @@
 package com.linkometrics.urlshortener.service;
 
-import aj.org.objectweb.asm.commons.TryCatchBlockSorter;
 import com.linkometrics.urlshortener.entity.Url;
+import com.linkometrics.urlshortener.exception.InvalidUserUrlException;
 import com.linkometrics.urlshortener.exception.UrlNotFoundException;
 import com.linkometrics.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class UrlService {
     {
         if(originalUrl == null || originalUrl.isBlank())
         {
-            throw new IllegalArgumentException("Url cannot be empty.");
+            throw new InvalidUserUrlException("Url cannot be empty.");     //@NotBlank catches the empty string before your service is called.
         }
 
         String url = originalUrl.trim(); //removes spaces before and after the url
@@ -63,14 +63,14 @@ public class UrlService {
 
             if(host == null || !host.contains(".") || host.startsWith(".") || host.endsWith("."))
             {
-                throw new IllegalArgumentException("Invalid Url");
+                throw new InvalidUserUrlException("Invalid Url");  //the string "Invalid Url" will be shown by Exception Handler
             }
 
             return url;
         }
         catch (URISyntaxException e)
         {
-            throw new IllegalArgumentException("Invalid Url");
+            throw new InvalidUserUrlException("Invalid Url");
         }
 
     }

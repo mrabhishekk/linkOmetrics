@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice   //This class contains handlers for exceptions thrown by my controllers.
 public class GlobalExceptionHandler {
 
+
     //If a UrlNotFoundException occurs, use the method immediately below to handle it.
     @ExceptionHandler(UrlNotFoundException.class)
     public ResponseEntity<String> handleUrlNotFound(UrlNotFoundException myException)
@@ -16,4 +17,14 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(myException.getMessage());
     }
+
+
+    @ExceptionHandler(InvalidUserUrlException.class)
+    public ResponseEntity<String> handleInvalidUserUrl(InvalidUserUrlException myException)
+    {
+        return ResponseEntity
+                .badRequest()
+                .body(myException.getMessage());
+    }
+
 }
