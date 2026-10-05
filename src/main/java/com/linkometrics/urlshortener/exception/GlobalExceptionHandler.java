@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice   //This class contains handlers for exceptions thrown by my controllers.
+@RestControllerAdvice   //@RestControllerAdvice means this class contains handlers for exceptions thrown by my controllers.
 public class GlobalExceptionHandler {
 
 
@@ -24,6 +24,14 @@ public class GlobalExceptionHandler {
     {
         return ResponseEntity
                 .badRequest()
+                .body(myException.getMessage());
+    }
+
+    @ExceptionHandler(UrlExpiredException.class)
+    public ResponseEntity<String> handleUrlExpired(UrlExpiredException myException)
+    {
+        return ResponseEntity
+                .status(HttpStatus.GONE)
                 .body(myException.getMessage());
     }
 

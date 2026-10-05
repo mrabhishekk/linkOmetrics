@@ -37,7 +37,7 @@ public class UrlController  //controller is mainly responsible for building the 
     @PostMapping("/shorten")
     public Url shortenUrl(@Valid @RequestBody UrlRequest request) //@RequestBody converts JSON → UrlRequest
     {
-        return urlService.saveUrl(request.getOriginalUrl());
+        return urlService.saveUrl(request.getOriginalUrl(), request.getExpiresAt());
     }
 
 

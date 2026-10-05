@@ -2,12 +2,14 @@ package com.linkometrics.urlshortener.service;
 
 import com.linkometrics.urlshortener.entity.Url;
 import com.linkometrics.urlshortener.exception.InvalidUserUrlException;
+import com.linkometrics.urlshortener.exception.UrlExpiredException;
 import com.linkometrics.urlshortener.exception.UrlNotFoundException;
 import com.linkometrics.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 @Service
 public class UrlService {
@@ -22,13 +24,15 @@ public class UrlService {
 
 
     //Mapping of Java objects to database records.
-    public Url saveUrl(String originalUrl)
+    public Url saveUrl(String originalUrl, LocalDateTime expiresAt)
     {
         originalUrl = validateAndFormatUrl(originalUrl);
 
         Url url = new Url();  //Each url object is a row in the database.
 
         url.setOriginalUrl(originalUrl);
+
+        url.setExpiresAt(expiresAt);
 
         urlRepository.save(url); //Spring Data JPA takes this Java object and saves it to PostgreSQL. //We also create the database id.
 
@@ -99,6 +103,12 @@ public class UrlService {
     public Url getByShortCode(String shortCode)
     {
         Url url = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException("Short Url not found.")); //If the URL exists, give me the Url object. If it doesn't exist, throw an exception.
+
+        //url.getExpiresAt() == null means never expiring.
+        if(url.getExpiresAt() != null && LocalDateTime.now().isAfter(url.getExpiresAt()))
+        {
+            throw new UrlExpiredException("Short Url has expired.");
+        }
 
         url.incrementClicks();
         urlRepository.save(url);

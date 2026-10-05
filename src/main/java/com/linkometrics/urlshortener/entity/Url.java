@@ -1,10 +1,11 @@
 package com.linkometrics.urlshortener.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "urls")
-public class Url {      //this class represents data that is stored in our database
+public class Url {      //this class represents the data stored in our database
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +17,8 @@ public class Url {      //this class represents data that is stored in our datab
     private String shortCode;
 
     private long clicks = 0;
+
+    private LocalDateTime expiresAt;
 
 
     public Long getId()
@@ -54,6 +57,17 @@ public class Url {      //this class represents data that is stored in our datab
     public void incrementClicks()
     {
         clicks++;
+    }
+
+
+    public LocalDateTime getExpiresAt()
+    {
+        return expiresAt;
+    }
+
+    public void setExpiresAt(LocalDateTime expiresAt)
+    {
+        this.expiresAt = expiresAt;
     }
 
 
