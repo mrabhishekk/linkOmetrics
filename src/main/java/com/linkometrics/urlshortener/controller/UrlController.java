@@ -25,8 +25,7 @@ public class UrlController  //controller is mainly responsible for building the 
     private final UrlService urlService;
 
     //The constructor itself doesn't automatically find UrlService.
-    //The constructor provides the place where UrlService can be assigned,
-    //and Spring automatically calls the constructor and gives it the UrlService object.
+    //The constructor provides the place where UrlService can be assigned, and Spring automatically calls the constructor and gives it the UrlService object.
     //So, constructor helps in auto-assigning.
     public UrlController(UrlService urlService)
     {
@@ -45,13 +44,19 @@ public class UrlController  //controller is mainly responsible for building the 
     @GetMapping("/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode) //@PathVariable = Take the value from {shortCode} in the URL and put it into the Java variable shortCode.
     {
-
-        Url url = urlService.getByShortCode(shortCode);
+        Url url = urlService.recordClicks(shortCode);
 
         return ResponseEntity
                 .status(HttpStatus.FOUND) //FOUND means HTTP status 302 - resource temporarily moved - redirect
                 .location(URI.create(url.getOriginalUrl())) //where to redirect, URI.create() is basically converting your URL String into the URI object needed for the redirect response.
                 .build();
+    }
+
+
+    @GetMapping("/{shortCode}/stats")
+    public Url getStats(@PathVariable String shortCode)
+    {
+        return urlService.getByShortCode(shortCode);
     }
 
 }
