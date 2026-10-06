@@ -4,6 +4,7 @@ import com.linkometrics.urlshortener.entity.Url;
 import com.linkometrics.urlshortener.exception.InvalidUserUrlException;
 import com.linkometrics.urlshortener.exception.UrlExpiredException;
 import com.linkometrics.urlshortener.exception.UrlNotFoundException;
+import com.linkometrics.urlshortener.model.UrlStatsResponse;
 import com.linkometrics.urlshortener.repository.UrlRepository;
 import org.springframework.stereotype.Service;
 
@@ -100,9 +101,9 @@ public class UrlService {
 
 
     //this code can be put into controller, but keeping it as a method here makes it modular to reuse this logic from anywhere, many times.
+    //find short url in database if exist and not expired
     public Url getByShortCode(String shortCode)
     {
-        //find short url in database if exist
         Url url = urlRepository.findByShortCode(shortCode).orElseThrow(() -> new UrlNotFoundException("Short Url not found.")); //If the URL exists, give me the Url object. If it doesn't exist, throw an exception.
 
         //url.getExpiresAt() == null means never expiring.
@@ -126,6 +127,12 @@ public class UrlService {
     }
 
 
+    public UrlStatsResponse getStats(String shortCode)
+    {
+        Url url = getByShortCode(shortCode);
+
+        return new UrlStatsResponse(url);
+    }
+
 }
 
- 

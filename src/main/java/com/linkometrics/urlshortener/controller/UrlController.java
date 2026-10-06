@@ -2,6 +2,7 @@ package com.linkometrics.urlshortener.controller;
 
 import com.linkometrics.urlshortener.entity.Url;
 import com.linkometrics.urlshortener.model.UrlRequest;
+import com.linkometrics.urlshortener.model.UrlStatsResponse;
 import com.linkometrics.urlshortener.service.UrlService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -54,9 +55,9 @@ public class UrlController  //controller is mainly responsible for building the 
 
 
     @GetMapping("/{shortCode}/stats")
-    public Url getStats(@PathVariable String shortCode)
+    public UrlStatsResponse getStats(@PathVariable String shortCode)
     {
-        return urlService.getByShortCode(shortCode);
+        return urlService.getStats(shortCode);
     }
 
 }
