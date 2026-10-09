@@ -39,13 +39,11 @@ public class UrlService {
 
         url.setExpiresAt(expiresAt);
 
-        urlRepository.save(url); //Spring Data JPA takes this Java object and saves it to PostgreSQL. //We also create the database id.
-
-        String shortCode = encodeBase62(url.getId());
+        String shortCode = encodeBase62(id);
 
         url.setShortCode(shortCode);
 
-        return urlRepository.save(url);
+        return urlRepository.save(url); //Spring Data JPA takes this Java object and saves it to PostgreSQL. //We also create the database id.
 
     }
 
