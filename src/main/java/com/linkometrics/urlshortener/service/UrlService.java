@@ -31,6 +31,10 @@ public class UrlService {
 
         Url url = new Url();  //Each url object is a row in the database.
 
+        Long id = urlRepository.getNextId();
+
+        url.setId(id);
+
         url.setOriginalUrl(originalUrl);
 
         url.setExpiresAt(expiresAt);

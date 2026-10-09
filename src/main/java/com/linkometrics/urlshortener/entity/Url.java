@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public class Url {      //this class represents the data stored in our database
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String originalUrl;
@@ -24,6 +23,11 @@ public class Url {      //this class represents the data stored in our database
     public Long getId()
     {
         return id;
+    }
+
+    public void setId(Long id)
+    {
+        this.id = id;
     }
 
 
@@ -69,6 +73,7 @@ public class Url {      //this class represents the data stored in our database
     {
         this.expiresAt = expiresAt;
     }
+
 
 
 }
