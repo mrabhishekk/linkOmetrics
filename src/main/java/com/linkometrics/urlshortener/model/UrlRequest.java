@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
-//this class represents the data coming from the user into the app, which gets turn into an object and get used by the controller //think of it as all the parameters the shortenUrl( ) will receive
+//this class represents the data coming from the user into the app, which gets turn into an object and get used by the controller //think of it as all the parameters the shortenUrl( ) method will receive
 public class UrlRequest
 {
     @NotBlank

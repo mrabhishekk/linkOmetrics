@@ -85,7 +85,17 @@ public class UrlService {
 
     public String encodeBase62(Long id)
     {
+        if(id == null || id < 0)
+        {
+            throw new IllegalArgumentException("id must be non-negative");
+        }
+
         String characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        if(id == 0)
+        {
+            return "0";
+        }
 
         StringBuilder result = new StringBuilder();
 
