@@ -146,5 +146,14 @@ public class UrlService {
         return new UrlStatsResponse(url);
     }
 
+
+    public void deleteByShortCode(String shortCode)
+    {
+        Url url = urlRepository.findByShortCode(shortCode).orElseThrow( () -> new UrlNotFoundException("Short Url not found."));
+
+        urlRepository.delete(url);
+    }
+
+
 }
 

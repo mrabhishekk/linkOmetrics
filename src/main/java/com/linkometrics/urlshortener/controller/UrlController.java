@@ -60,4 +60,14 @@ public class UrlController  //controller is mainly responsible for building the 
         return urlService.getStats(shortCode);
     }
 
+
+    @DeleteMapping("{shortCode}")   //maps HTTP DELETE requests to this method
+    public ResponseEntity<Void> deleteUrl(@PathVariable String shortCode)
+    {
+        urlService.deleteByShortCode(shortCode);
+
+        return ResponseEntity.noContent().build(); //returns HTTP 204 No Content, meaning the deletion succeeded
+    }
+
+
 }
