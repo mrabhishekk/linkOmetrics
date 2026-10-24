@@ -6,6 +6,8 @@ import com.linkometrics.urlshortener.exception.UrlExpiredException;
 import com.linkometrics.urlshortener.exception.UrlNotFoundException;
 import com.linkometrics.urlshortener.model.UrlStatsResponse;
 import com.linkometrics.urlshortener.repository.UrlRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
@@ -154,6 +156,11 @@ public class UrlService {
         urlRepository.delete(url);
     }
 
+
+    public Page<Url> getAllUrls(Pageable pageable)
+    {
+        return urlRepository.findAll(pageable);
+    }
 
 }
 

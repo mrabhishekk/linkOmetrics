@@ -5,11 +5,15 @@ import com.linkometrics.urlshortener.model.UrlRequest;
 import com.linkometrics.urlshortener.model.UrlStatsResponse;
 import com.linkometrics.urlshortener.service.UrlService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+
 
 @RestController  //@RestController tells this class contains APIs that should receive HTTP requests.
 //@RequestMapping("/abhi")
@@ -69,5 +73,23 @@ public class UrlController  //controller is mainly responsible for building the 
         return ResponseEntity.noContent().build(); //returns HTTP 204 No Content, meaning the deletion succeeded
     }
 
+
+    @GetMapping("/urls")
+    public Page<Url> getAllUrls(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) //@RequestParam reads values from the URL query parameters.
+    {
+        if(page < 0)
+        {
+            throw new IllegalArgumentException("Page number cannot be negative");
+        }
+
+        if(size < 1 || size > 10)
+        {
+            throw new IllegalArgumentException("Page size must be between 1 and 10");
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        return urlService.getAllUrls(pageable);
+    }
 
 }
