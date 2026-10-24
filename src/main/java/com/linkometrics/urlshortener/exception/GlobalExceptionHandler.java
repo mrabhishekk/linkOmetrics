@@ -1,5 +1,6 @@
 package com.linkometrics.urlshortener.exception;
 
+import org.aspectj.asm.IProgramElement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,6 +28,7 @@ public class GlobalExceptionHandler {
                 .body(myException.getMessage());
     }
 
+
     @ExceptionHandler(UrlExpiredException.class)
     public ResponseEntity<String> handleUrlExpired(UrlExpiredException myException)
     {
@@ -35,4 +37,13 @@ public class GlobalExceptionHandler {
                 .body(myException.getMessage());
     }
 
+
+    @ExceptionHandler(InvalidPaginationException.class)
+    public ResponseEntity<String> handleInvalidPagination(InvalidPaginationException myException)
+    {
+        return ResponseEntity
+                .badRequest() //sets the HTTP status to 400
+                .body(myException.getMessage()); //returns the message you provided when throwing the exception.
+
+    }
 }

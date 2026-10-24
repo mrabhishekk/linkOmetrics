@@ -1,6 +1,7 @@
 package com.linkometrics.urlshortener.controller;
 
 import com.linkometrics.urlshortener.entity.Url;
+import com.linkometrics.urlshortener.exception.InvalidPaginationException;
 import com.linkometrics.urlshortener.model.UrlRequest;
 import com.linkometrics.urlshortener.model.UrlStatsResponse;
 import com.linkometrics.urlshortener.service.UrlService;
@@ -79,12 +80,12 @@ public class UrlController  //controller is mainly responsible for building the 
     {
         if(page < 0)
         {
-            throw new IllegalArgumentException("Page number cannot be negative");
+            throw new InvalidPaginationException("Page number cannot be negative");
         }
 
         if(size < 1 || size > 10)
         {
-            throw new IllegalArgumentException("Page size must be between 1 and 10");
+            throw new InvalidPaginationException("Page size must be between 1 and 10");
         }
 
         Pageable pageable = PageRequest.of(page, size);
